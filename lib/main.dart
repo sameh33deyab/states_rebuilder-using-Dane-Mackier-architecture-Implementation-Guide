@@ -5,6 +5,8 @@ import 'core/services/authentication_service .dart';
 import 'core/services/posts_service.dart';
 import 'ui/router.dart';
 
+void main() => runApp(App());
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

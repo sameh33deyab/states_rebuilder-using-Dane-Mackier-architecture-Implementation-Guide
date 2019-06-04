@@ -3,7 +3,7 @@ import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:states_rebuilder_using_dane_mackier_implementation_guide/core/models/post.dart';
 
 import './../../core/services/authentication_service%20.dart';
-import './../../core//viewModel/home_model.dart';
+import './../../core/viewModel/home_model.dart';
 import './../../ui/shared/app_colors.dart';
 import './../../ui/shared/text_styles.dart';
 import './../../ui/shared/ui_helpers.dart';

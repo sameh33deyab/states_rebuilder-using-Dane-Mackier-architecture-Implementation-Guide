@@ -13,7 +13,6 @@ class CommentsModel extends BaseModel {
   Future fetchComments(int postId) async {
     setState(ViewState.Busy);
     comments = await _api.getCommentsForPost(postId);
-    print(comments);
     setState(ViewState.Idle);
   }
 }
