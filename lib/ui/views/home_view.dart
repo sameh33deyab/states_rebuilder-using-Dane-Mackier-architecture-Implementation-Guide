@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:states_rebuilder_using_dane_mackier_implementation_guide/core/models/post.dart';
-
 import './../../core/services/authentication_service%20.dart';
 import './../../core/viewModel/home_model.dart';
 import './../../ui/shared/app_colors.dart';
@@ -21,8 +20,12 @@ class HomeView extends StatelessWidget {
         final user = authModel.userSnapshot.data;
 
         return StateBuilder(
-          blocs: [authModel, homeModel],
-          tag: tagUser.userStream,
+          blocs: [
+            authModel,
+            homeModel
+          ], //this widget can be rebuild from HomeModel and AuthenticationService
+          tag:
+              tagUser.userStream, // the tag is used to rebuild this widget by userController stream
           initState: (_, __) => homeModel.getPosts(user.id),
           builder: (_, __) => Scaffold(
                 backgroundColor: backgroundColor,

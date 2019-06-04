@@ -12,7 +12,9 @@ import 'package:states_rebuilder/states_rebuilder.dart';
 class PostView extends StatelessWidget {
   final Post post;
   PostView({this.post});
-  final user = Injector.get<AuthenticationService>().userSnapshot.data;
+  final user = Injector.get<AuthenticationService>()
+      .userSnapshot
+      .data; //snapshot of the userController stream
   @override
   Widget build(BuildContext context) {
     return Scaffold(

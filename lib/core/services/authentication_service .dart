@@ -37,5 +37,6 @@ class AuthenticationService extends StatesRebuilder {
 
   dispose() {
     userController.close();
+    print("userController is disposed");
   }
 }
