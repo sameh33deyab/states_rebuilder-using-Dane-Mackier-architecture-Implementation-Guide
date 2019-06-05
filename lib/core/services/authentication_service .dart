@@ -4,7 +4,6 @@ import './../models/user.dart';
 import './../services/api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import '../viewModel/enums.dart';
 
 class AuthenticationService extends StatesRebuilder {
   // Inject our Api
@@ -13,9 +12,9 @@ class AuthenticationService extends StatesRebuilder {
   AsyncSnapshot<User> userSnapshot;
 
   AuthenticationService() {
-    rebuildFromStreams(
+    rebuildFromStreams<User>(
       controllers: [userController],
-      tags: [tagUser.userStream],
+      tags: ["not needed"],
       initialData: [User.initial()],
       snapshots: (snaps) => userSnapshot = snaps[0],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:states_rebuilder_using_dane_mackier_implementation_guide/core/models/post.dart';
+import 'package:states_rebuilder_using_dane_mackier_implementation_guide/ui/views/base_view.dart';
 import './../../core/services/authentication_service%20.dart';
 import './../../core/viewModel/home_model.dart';
 import './../../ui/shared/app_colors.dart';
@@ -15,37 +16,34 @@ class HomeView extends StatelessWidget {
     return Injector(
       models: [() => HomeModel()],
       builder: (context) {
-        final homeModel = Injector.get<HomeModel>();
-        final authModel = Injector.get<AuthenticationService>();
-        final user = authModel.userSnapshot.data;
+        final user = Injector.get<AuthenticationService>().userSnapshot.data;
 
-        return StateBuilder(
-          blocs: [
-            authModel,
-            homeModel
-          ], //this widget can be rebuild from HomeModel and AuthenticationService
-          tag:
-              tagUser.userStream, // the tag is used to rebuild this widget by userController stream
-          initState: (_, __) => homeModel.getPosts(user.id),
-          builder: (_, __) => Scaffold(
+        return BaseView<HomeModel>(
+          onModelReady: (homeModel) {
+            homeModel.getPosts(user.id);
+          },
+          builder: (context, homeModel) => Scaffold(
                 backgroundColor: backgroundColor,
                 body: homeModel.state == ViewState.Idle
-                    ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        UIHelper.verticalSpaceLarge(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Welcome ${user.name}',
-                            style: headerStyle,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: Text('Here are all your posts', style: subHeaderStyle),
-                        ),
-                        UIHelper.verticalSpaceSmall(),
-                        Expanded(child: getPostsUi(homeModel.posts)),
-                      ])
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            UIHelper.verticalSpaceLarge(),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'Welcome ${user.name}',
+                                style: headerStyle,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20.0),
+                              child: Text('Here are all your posts',
+                                  style: subHeaderStyle),
+                            ),
+                            UIHelper.verticalSpaceSmall(),
+                            Expanded(child: getPostsUi(homeModel.posts)),
+                          ])
                     : Center(child: CircularProgressIndicator()),
               ),
         );

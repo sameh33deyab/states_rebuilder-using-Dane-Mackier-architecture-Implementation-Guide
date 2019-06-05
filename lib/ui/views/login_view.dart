@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
+import 'package:states_rebuilder_using_dane_mackier_implementation_guide/ui/views/base_view.dart';
 import './../../core/viewModel/enums.dart';
 import './../../core/viewModel/login_model.dart';
 import './../../ui/shared/app_colors.dart';
@@ -18,12 +19,10 @@ class _LoginViewState extends State<LoginView> {
     return Injector(
       models: [() => LoginModel()],
       builder: (context) {
-        //We can get the model form the same widget where it is registered
-        final model = Injector.get<LoginModel>();
+        //Use of baseView
 
-        return StateBuilder(
-          blocs: [model],
-          builder: (_, __) => Scaffold(
+        return BaseView<LoginModel>(
+          builder: (context, model) => Scaffold(
                 backgroundColor: backgroundColor,
                 body: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -42,7 +41,8 @@ class _LoginViewState extends State<LoginView> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () async {
-                              var loginSuccess = await model.login(controller.text);
+                              var loginSuccess =
+                                  await model.login(controller.text);
                               if (loginSuccess) {
                                 Navigator.pushNamed(context, '/');
                               }
@@ -56,3 +56,18 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+// StateBuilder(
+//           blocs: [model],
+//           builder: (_, __) => Scaffold(
+
+// ChangeNotifierProvider<LoginModel>(
+//       builder: (context) => locator<LoginModel>(),
+//       child: Consumer<LoginModel>(
+//       builder: (context, model, child) => Scaffold(
+
+// BaseView(
+//           builder: (context, model) => Scaffold(
+
+// BaseView<LoginModel>(
+//       builder: (context, model, child) =>
