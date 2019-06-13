@@ -14,7 +14,7 @@ class Comments extends StatelessWidget {
   Widget build(BuildContext context) {
     return Injector(
       models: [() => CommentsModel()],
-      builder: (_) {
+      builder: (_, __) {
         final model = Injector.get<CommentsModel>();
 
         return StateBuilder(
@@ -24,7 +24,9 @@ class Comments extends StatelessWidget {
               ? Center(child: CircularProgressIndicator())
               : Expanded(
                   child: ListView(
-                    children: model.comments.map((comment) => CommentItem(comment)).toList(),
+                    children: model.comments
+                        .map((comment) => CommentItem(comment))
+                        .toList(),
                   ),
                 ),
         );
@@ -43,7 +45,8 @@ class CommentItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10.0),
       margin: EdgeInsets.symmetric(vertical: 10.0),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: commentColor),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0), color: commentColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

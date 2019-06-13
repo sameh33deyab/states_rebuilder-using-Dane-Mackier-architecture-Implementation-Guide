@@ -13,7 +13,7 @@ class LikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Injector(
       models: [() => LikeButtonModel()],
-      builder: (_) {
+      builder: (_, __) {
         final model = Injector.get<LikeButtonModel>();
         return StateBuilder(
             blocs: [model],

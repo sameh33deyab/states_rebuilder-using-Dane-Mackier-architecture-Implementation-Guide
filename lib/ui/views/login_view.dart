@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import 'package:states_rebuilder_using_dane_mackier_implementation_guide/ui/views/base_view.dart';
 import './../../core/viewModel/enums.dart';
 import './../../core/viewModel/login_model.dart';
 import './../../ui/shared/app_colors.dart';
@@ -16,58 +15,56 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Injector(
-      models: [() => LoginModel()],
-      builder: (context) {
-        //Use of baseView
+    //Injector is used with LoginModel as generic type
+    //LoginModel must extends StatesRebuilder
+    //Any model that extends StatesRebuilder is called ViewModel
 
-        return BaseView<LoginModel>(
-          builder: (context, model) => Scaffold(
-                backgroundColor: backgroundColor,
-                body: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LoginHeader(
-                      validationMessage: model.errorMessage,
-                      controller: controller,
-                    ),
-                    model.state == ViewState.Busy
-                        ? CircularProgressIndicator()
-                        : FlatButton(
-                            color: Colors.white,
-                            child: Text(
-                              'Login',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () async {
-                              var loginSuccess =
-                                  await model.login(controller.text);
-                              if (loginSuccess) {
-                                Navigator.pushNamed(context, '/');
-                              }
-                            },
-                          )
-                  ],
-                ),
-              ),
+    //It rebuildStates() method is called inside LoginModel this widget will rebuild.
+    //You can register many services and one viewModel
+    return Injector<LoginModel>(
+      models: [() => LoginModel()],
+      builder: (context, model) {
+        return Scaffold(
+          backgroundColor: backgroundColor,
+          body: _LoginBody(controller: controller),
         );
       },
     );
   }
 }
 
-// StateBuilder(
-//           blocs: [model],
-//           builder: (_, __) => Scaffold(
+class _LoginBody extends StatelessWidget {
+  final controller;
+  final model = Injector.get<LoginModel>();
 
-// ChangeNotifierProvider<LoginModel>(
-//       builder: (context) => locator<LoginModel>(),
-//       child: Consumer<LoginModel>(
-//       builder: (context, model, child) => Scaffold(
+  _LoginBody({this.controller});
 
-// BaseView(
-//           builder: (context, model) => Scaffold(
-
-// BaseView<LoginModel>(
-//       builder: (context, model, child) =>
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        LoginHeader(
+          validationMessage: model.errorMessage,
+          controller: controller,
+        ),
+        model.state == ViewState.Busy
+            ? CircularProgressIndicator()
+            : FlatButton(
+                color: Colors.white,
+                child: Text(
+                  'Login',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onPressed: () async {
+                  var loginSuccess = await model.login(controller.text);
+                  if (loginSuccess) {
+                    Navigator.pushNamed(context, '/');
+                  }
+                },
+              )
+      ],
+    );
+  }
+}

@@ -14,6 +14,9 @@ class App extends StatelessWidget {
     //Models are registered when needed in the widget tree using Injector widget.
     //Models are unregistered when the Injector widget is disposed.
     //These three models are needed globally in the app.
+
+    //IMPORTANT: Injector is used without generic type. It is allowed. And model argument in dispose, initState and builder is null
+    //The case is used to inject services.
     return Injector(
       models: [
         () => Api(),
@@ -22,10 +25,10 @@ class App extends StatelessWidget {
             PostsService(), // This model is better registered in the HomeView widget.
       ],
       // We can dispose resources with dispose parameter
-      dispose: () => Injector.get<AuthenticationService>().dispose(),
+      dispose: (_) => Injector.get<AuthenticationService>().dispose(),
       // If we want to dispose all the models we set disposeModels to true. Models must have dispose() method
       // disposeModels: true,
-      builder: (context) => MaterialApp(
+      builder: (context, _) => MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(),
             initialRoute: 'login',

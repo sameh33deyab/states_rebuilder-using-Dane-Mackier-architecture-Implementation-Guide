@@ -1,22 +1,21 @@
 import 'dart:async';
 
-import './../models/user.dart';
-import './../services/api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
+
+import './../models/user.dart';
+import './../services/api.dart';
 
 class AuthenticationService extends StatesRebuilder {
   // Inject our Api
   Api _api = Injector.get<Api>();
   StreamController<User> userController = StreamController<User>();
-  AsyncSnapshot<User> userSnapshot;
-
+  Streaming streaming;
+  AsyncSnapshot<User> get userSnapshot => streaming.snapshots[0];
   AuthenticationService() {
-    rebuildFromStreams<User>(
+    streaming = Streaming<User, User>(
       controllers: [userController],
-      tags: ["not needed"],
       initialData: [User.initial()],
-      snapshots: (snaps) => userSnapshot = snaps[0],
     );
   }
 
