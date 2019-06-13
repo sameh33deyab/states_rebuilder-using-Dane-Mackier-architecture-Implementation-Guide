@@ -3,6 +3,9 @@ import 'package:states_rebuilder_using_dane_mackier_implementation_guide/core/mo
 import 'package:states_rebuilder_using_dane_mackier_implementation_guide/core/services/authentication_service%20.dart';
 
 class PostModel extends StatesRebuilder {
+  PostModel() {
+    authStreaming.addListener(this);
+  }
   final authStreaming = Injector.get<AuthenticationService>().authStreaming;
   User get user => authStreaming.snapshots[0].data;
 }
