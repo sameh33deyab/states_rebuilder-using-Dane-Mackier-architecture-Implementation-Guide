@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 import './../models/user.dart';
@@ -10,10 +9,12 @@ class AuthenticationService extends StatesRebuilder {
   // Inject our Api
   Api _api = Injector.get<Api>();
   StreamController<User> userController = StreamController<User>();
-  Streaming streaming;
-  AsyncSnapshot<User> get userSnapshot => streaming.snapshots[0];
+
+  //Streaming is used to share streams between viewModels
+  Streaming<User, User> authStreaming;
+
   AuthenticationService() {
-    streaming = Streaming<User, User>(
+    authStreaming = Streaming(
       controllers: [userController],
       initialData: [User.initial()],
     );

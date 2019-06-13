@@ -10,12 +10,16 @@ import 'base_model.dart';
 import 'enums.dart';
 
 class HomeModel extends BaseModel {
+  HomeModel() {
+    authStreaming.addListener(this);
+  }
   PostsService _postsService = Injector.get<PostsService>();
+
+  final authStreaming = Injector.get<AuthenticationService>().authStreaming;
 
   List<Post> get posts => _postsService.posts;
 
-  AsyncSnapshot<User> userSnapshot =
-      Injector.get<AuthenticationService>().userSnapshot;
+  AsyncSnapshot<User> get userSnapshot => authStreaming.snapshots[0];
 
   getPosts() async {
     setState(ViewState.Busy);
